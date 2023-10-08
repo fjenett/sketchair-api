@@ -10,17 +10,19 @@ const port = 3000;
 
 app.use(bodyParser.json({ limit: '50mb' }));
 
-const whitelist = ['http://localhost:5173', process.env.APP_URL];
-const corsOptions = {
-    origin(origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-};
-app.use(cors(corsOptions));
+// const whitelist = ['http://localhost:5173', process.env.APP_URL];
+// const corsOptions = {
+//     origin(origin, callback) {
+//         if (whitelist.indexOf(origin) !== -1) {
+//             callback(null, true);
+//         } else {
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
+// };
+// app.use(cors(corsOptions));
+
+app.use(cors());
 
 app.use(helmet());
 
