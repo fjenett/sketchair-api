@@ -10,19 +10,17 @@ const port = 3000;
 
 app.use(bodyParser.json({ limit: '50mb' }));
 
-// const whitelist = ['http://localhost:5173', process.env.APP_URL];
-// const corsOptions = {
-//     origin(origin, callback) {
-//         if (whitelist.indexOf(origin) !== -1) {
-//             callback(null, true);
-//         } else {
-//             callback(new Error('Not allowed by CORS'));
-//         }
-//     },
-// };
-// app.use(cors(corsOptions));
-
-app.use(cors());
+const whitelist = ['http://localhost:5173', process.env.APP_URL];
+const corsOptions = {
+    origin(origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+};
+app.use(cors(corsOptions));
 
 app.use(helmet());
 
@@ -32,7 +30,7 @@ app.get('/', (req, res) => {
 
 app.get('/image', async (req, res) => {
     const response = await axios.get(
-        `https://${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image`
+        `https://${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image?max_results=500`
     );
 
     const responseArray = response.data.resources
