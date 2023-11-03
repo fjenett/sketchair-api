@@ -38,10 +38,9 @@ app.get('/image', async (req, res) => {
             `https://${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image?max_results=500`
         );
 
-        const responseArray = response.data.resources.sort(
-            (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
-        // .map((item) => item.secure_url);
+        const responseArray = response.data.resources
+            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+            .map((item) => item.secure_url);
 
         res.json(responseArray);
     } catch (error) {
