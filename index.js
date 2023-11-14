@@ -38,8 +38,8 @@ app.get('/image', async (req, res) => {
             `https://${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image?max_results=500`
         );
 
-        let imageArray = [];
-        const sketchArray = [];
+        const imageArray = [];
+        let sketchArray = [];
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < response.data.resources.length; i++) {
             const element = response.data.resources[i];
@@ -50,28 +50,28 @@ app.get('/image', async (req, res) => {
             }
         }
 
-        imageArray = imageArray.sort(
+        sketchArray = sketchArray.sort(
             (a, b) => new Date(a.created_at) - new Date(b.created_at)
         );
 
         let responseArray = [];
         // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < imageArray.length; i++) {
-            const imageElement = imageArray[i];
-            const imageString = imageElement.public_id.substring(
+        for (let i = 0; i < sketchArray.length; i++) {
+            const sketchElement = sketchArray[i];
+            const sketchString = sketchElement.public_id.substring(
                 0,
-                imageElement.public_id.lastIndexOf('_')
+                sketchElement.public_id.lastIndexOf('_')
             );
             // eslint-disable-next-line no-plusplus
-            for (let j = 0; j < sketchArray.length; j++) {
-                const sketchElement = sketchArray[j];
-                const sketchString = sketchElement.public_id.substring(
+            for (let j = 0; j < imageArray.length; j++) {
+                const imageElement = imageArray[j];
+                const imageString = imageElement.public_id.substring(
                     0,
-                    sketchElement.public_id.lastIndexOf('_')
+                    imageElement.public_id.lastIndexOf('_')
                 );
-                if (imageString === sketchString) {
-                    responseArray.push(imageElement);
+                if (sketchString === imageString) {
                     responseArray.push(sketchElement);
+                    responseArray.push(imageElement);
                     break;
                 }
             }
