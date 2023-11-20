@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 app.get('/image', async (req, res) => {
     try {
         const response = await axios.get(
-            `https://${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image?max_results=500`
+            `https://${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/resources/image?max_results=500&context=true`
         );
 
         const imageArray = [];
@@ -77,7 +77,10 @@ app.get('/image', async (req, res) => {
             }
         }
 
-        responseArray = responseArray.map((item) => item.secure_url);
+        responseArray = responseArray.map((item) => ({
+            url: item.secure_url,
+            description: item.context ? item.context.custom.description : '',
+        }));
 
         res.json(responseArray);
     } catch (error) {
@@ -98,6 +101,7 @@ app.post('/image', async (req, res) => {
                 upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
                 public_id: req.body.public_id,
                 tags: req.body.tags,
+                context: `description=${req.body.description}`,
             }
         );
         res.json({ url: response.data.url });
