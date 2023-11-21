@@ -58,8 +58,6 @@ app.get('/image', async (req, res) => {
                     )
                 ) {
                     sketchArray.push(element);
-                } else {
-                    console.log(element.public_id);
                 }
             }
         }
