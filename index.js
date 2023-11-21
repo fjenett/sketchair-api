@@ -46,7 +46,18 @@ app.get('/image', async (req, res) => {
             if (element.public_id.endsWith('image')) {
                 imageArray.push(element);
             } else if (element.public_id.endsWith('sketch')) {
-                sketchArray.push(element);
+                if (
+                    !element.public_id.endsWith(
+                        'pink_slimy_nature_asd_asd_sketch'
+                    ) ||
+                    !element.public_id.endsWith(
+                        'cyan_liquid_fantasy_test_test_sketch'
+                    ) ||
+                    !element.public_id.endsWith(
+                        'orange_liquid_reptile_test_new_sketch'
+                    )
+                )
+                    sketchArray.push(element);
             }
         }
 
