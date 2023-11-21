@@ -94,6 +94,8 @@ app.get('/image', async (req, res) => {
             description: item.context ? item.context.custom.description : '',
         }));
 
+        responseArray = responseArray.slice(responseArray.length - 118);
+
         res.json(responseArray);
     } catch (error) {
         console.error(error);
